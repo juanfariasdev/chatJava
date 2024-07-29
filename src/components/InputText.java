@@ -1,5 +1,7 @@
 package components;
 
+import controllers.ChatController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -12,8 +14,11 @@ import java.util.Objects;
 public class InputText extends JPanel {
     private JTextField textField;
     private JButton sendButton;
+    private ChatController chatController;
 
-    public InputText(){
+    public InputText(ChatController chatController) {
+        this.chatController = chatController;
+
         setLayout(new BorderLayout());
         setOpaque(false);
         setPreferredSize(new Dimension(0, 50));
@@ -39,8 +44,8 @@ public class InputText extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = textField.getText();
-                // Implementar ação ao clicar no botão de enviar
-                System.out.println("Texto enviado: " + text);
+                chatController.sendMessage(text);
+                textField.setText("");
             }
         });
 
@@ -57,7 +62,6 @@ public class InputText extends JPanel {
         g2.dispose();
         return resizedImage;
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {

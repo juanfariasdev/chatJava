@@ -2,6 +2,7 @@ package pages;
 
 import components.ChatPanel;
 import components.InputText;
+import controllers.ChatController;
 import ui.Background;
 
 import javax.swing.*;
@@ -11,11 +12,12 @@ import java.awt.*;
 public class ChatForm extends JFrame {
     public ChatForm() {
         Background background = new Background();
-        InputText inputText = new InputText();
-        ChatPanel chatField = new ChatPanel();
+        ChatPanel chatPanel = new ChatPanel();
+        ChatController chatController = new ChatController(chatPanel);
+        InputText inputText = new InputText(chatController);
 
         background.setLayout(new BorderLayout());
-        background.add(chatField, BorderLayout.NORTH);
+        background.add(chatPanel, BorderLayout.CENTER);
         background.add(inputText, BorderLayout.SOUTH);
         background.setBorder(new EmptyBorder(10, 10, 10, 10));
 
