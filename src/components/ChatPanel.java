@@ -6,19 +6,26 @@ import java.awt.*;
 public class ChatPanel extends JPanel {
     public ChatPanel() {
         setOpaque(false);
-        setLayout(new BorderLayout());
-        JPanel chatField = new JPanel();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        BallonText ballonText = new BallonText("opaaaaaaaaa");
-        BallonText ballonText2 = new BallonText("opaaaaaaaaa");
-        BallonText ballonText3 = new BallonText("opaaaaaaaaa");
-        BallonText ballonText4 = new BallonText("opaaaaaaaaa");
-        BallonText ballonText5 = new BallonText("opaaaaaaaaa");
+        addBallonText("opaaaaaaaaa");
+       addBallonText("Este é um balão de conversa com um texto mais longo para testar o ajuste de tamanho.");
+       addBallonText("Outro balão de texto.");
+       addBallonText("Mais um balão de texto para testar.");
+       addBallonText("Texto final do balão de conversa.");
+       addBallonText("Texto final do balão de conversa.");
+       addBallonText("Texto final do balão de conversa.");
+       addBallonText("Texto final do balão de conversa.");
+       addBallonText("Texto final do balão de conversa.");
+       addBallonText("Texto final do balão de conversa.");
 
-        chatField.add(ballonText);
-        chatField.add(ballonText2);
-        chatField.add(ballonText3);
-        chatField.add(ballonText4);
-        chatField.add(ballonText5, BorderLayout.CENTER);
+
+    }
+
+    private void addBallonText(String text) {
+        BallonText ballonText = new BallonText(text);
+        ballonText.setAlignmentX(Component.LEFT_ALIGNMENT); // Alinhar à esquerda
+        add(ballonText);
+        add(Box.createRigidArea(new Dimension(0, 10))); // Espaço entre os balões
     }
 }

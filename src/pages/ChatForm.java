@@ -1,6 +1,5 @@
 package pages;
 
-import components.BallonText;
 import components.ChatPanel;
 import components.InputText;
 import ui.Background;
@@ -15,17 +14,18 @@ public class ChatForm extends JFrame {
         InputText inputText = new InputText();
         ChatPanel chatField = new ChatPanel();
 
-        background.add(chatField);
-
+        background.setLayout(new BorderLayout());
+        background.add(chatField, BorderLayout.NORTH);
         background.add(inputText, BorderLayout.SOUTH);
         background.setBorder(new EmptyBorder(10, 10, 10, 10));
+
         setTitle("Chat Application");
-        setUndecorated(true); // Defina como sem decoração antes de tornar o frame exibível
+        setUndecorated(true);
         setContentPane(background);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
-        setSize(522, 669);
-        setLocationRelativeTo(null); // Centralize a janela na tela
-        setVisible(true); // Torne o frame visível
+        setSize(560, 669);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 }
