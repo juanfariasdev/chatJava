@@ -3,7 +3,7 @@ package controllers;
 import components.ChatPanel;
 
 public class ChatController {
-    private ChatPanel chatPanel;
+    private final ChatPanel chatPanel;
 
     public ChatController(ChatPanel chatPanel) {
         this.chatPanel = chatPanel;

@@ -1,3 +1,4 @@
+
 package components;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ public class BallonText extends JPanel {
         Container parent = getParent();
         if (parent != null) {
             int parentWidth = parent.getWidth();
-            int maxWidth = (int) (parentWidth * 0.8);
+            int maxWidth = (int) (parentWidth * 0.9);
             setMaximumSize(new Dimension(maxWidth, getPreferredSize().height));
         }
     }
@@ -39,7 +40,7 @@ public class BallonText extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         Dimension size = ballonText.getPreferredSize();
-        int width = Math.min(size.width + 30, (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.8));
+        int width = Math.min(size.width + 30, (int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.9));
         return new Dimension(width, size.height + 20);
     }
 
