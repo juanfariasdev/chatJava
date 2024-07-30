@@ -6,6 +6,8 @@ import java.awt.*;
 
 public class ChatPanel extends JPanel {
     private JPanel chatContainer;
+    private JScrollPane scrollPane;
+    private boolean shouldScrollToBottom = true;
 
     public ChatPanel() {
         setOpaque(false);
@@ -16,17 +18,24 @@ public class ChatPanel extends JPanel {
         chatContainer.setLayout(new BoxLayout(chatContainer, BoxLayout.Y_AXIS));
         chatContainer.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-        JScrollPane scrollPane = new JScrollPane(chatContainer);
+        scrollPane = new JScrollPane(chatContainer);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+        JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+        verticalBar.addAdjustmentListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                shouldScrollToBottom = (e.getAdjustable().getMaximum() - e.getAdjustable().getVisibleAmount()) == e.getAdjustable().getValue();
+            }
+        });
+
         add(scrollPane, BorderLayout.CENTER);
 
         // Adicionar mensagens iniciais
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             addBallonText("opaaaaaaaaa");
             addBallonText("Este é um balão de conversa com um texto mais longo para testar o ajuste de tamanho.");
             addBallonText("Outro balão de texto.");
@@ -37,12 +46,18 @@ public class ChatPanel extends JPanel {
 
     public void addBallonText(String text) {
         BallonText ballonText = new BallonText(text);
-        ballonText.setSize(0, 0);
         ballonText.setAlignmentX(Component.LEFT_ALIGNMENT);
         chatContainer.add(ballonText);
         chatContainer.add(Box.createRigidArea(new Dimension(0, 10)));
         chatContainer.revalidate();
         chatContainer.repaint();
+
+        if (shouldScrollToBottom) {
+            SwingUtilities.invokeLater(() -> {
+                JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+                verticalBar.setValue(verticalBar.getMaximum());
+            });
+        }
     }
 
     @Override
