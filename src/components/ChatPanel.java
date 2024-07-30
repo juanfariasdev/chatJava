@@ -35,9 +35,11 @@ public class ChatPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         // Adicionar mensagens iniciais
-        for (int i = 0; i < 20; i++) {
-            addBallonText("opaaaaaaaaa");
-            addBallonText("Este é um balão de conversa com um texto mais longo para testar o ajuste de tamanho.");
+        for (int i = 0; i < 5; i++) {
+            addBallonText("opa");
+
+            addBallonText("Mensagem curta");
+            addBallonText("Este é um balão de conversa com um texto mais longo para testar o ajuste de tamanho. Vamos ver como o layout se comporta com várias linhas de texto.");
             addBallonText("Outro balão de texto.");
             addBallonText("Mais um balão de texto para testar.");
             addBallonText("Texto final do balão de conversa.");
@@ -65,7 +67,7 @@ public class ChatPanel extends JPanel {
         super.doLayout();
         for (Component component : chatContainer.getComponents()) {
             if (component instanceof BallonText) {
-                component.setMaximumSize(new Dimension((int) (getWidth() * 0.75), Integer.MAX_VALUE)); // Ajustar para 75% da largura
+                component.setMaximumSize(new Dimension((int) (getWidth() * 0.75), component.getPreferredSize().height)); // Ajustar para 75% da largura
             }
         }
     }
