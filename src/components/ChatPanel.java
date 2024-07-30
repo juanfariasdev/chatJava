@@ -65,7 +65,7 @@ public class ChatPanel extends JPanel {
         super.doLayout();
         for (Component component : chatContainer.getComponents()) {
             if (component instanceof BallonText) {
-                component.setMaximumSize(new Dimension((int) (getWidth() * 0.9), Integer.MAX_VALUE));
+                component.setMaximumSize(new Dimension((int) (getWidth() * 0.75), Integer.MAX_VALUE)); // Ajustar para 75% da largura
             }
         }
     }

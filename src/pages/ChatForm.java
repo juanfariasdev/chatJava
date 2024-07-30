@@ -17,7 +17,7 @@ public class ChatForm extends JFrame {
         InputText inputText = new InputText(chatController);
 
         background.setLayout(new BorderLayout());
-        background.add(chatPanel, BorderLayout.CENTER); // Use BorderLayout.CENTER instead of NORTH
+        background.add(chatPanel, BorderLayout.CENTER);
         background.add(inputText, BorderLayout.SOUTH);
         background.setBorder(new EmptyBorder(10, 10, 10, 10));
 
