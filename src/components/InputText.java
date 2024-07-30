@@ -1,6 +1,8 @@
 package components;
 
 import controllers.ChatController;
+import controllers.ChatException;
+import controllers.Sender;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,14 +12,15 @@ import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
-
 public class InputText extends JPanel {
     private JTextField textField;
     private JButton sendButton;
     private ChatController chatController;
+    private Sender sender;
 
-    public InputText(ChatController chatController) {
+    public InputText(ChatController chatController, Sender sender) {
         this.chatController = chatController;
+        this.sender = sender;
 
         setLayout(new BorderLayout());
         setOpaque(false);
@@ -43,13 +46,30 @@ public class InputText extends JPanel {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String text = textField.getText();
-                chatController.sendMessage(text, true);
-                textField.setText("");
+                sendMessage();
+            }
+        });
+
+        textField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendMessage();
             }
         });
 
         add(sendButton, BorderLayout.EAST);
+    }
+
+    private void sendMessage() {
+        String text = textField.getText();
+        chatController.sendMessage(text, true);
+        try {
+            sender.send(text);
+        } catch (ChatException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao enviar mensagem: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        textField.setText("");
     }
 
     private Image resizeImage(Image originalImage, int targetWidth, int targetHeight) {

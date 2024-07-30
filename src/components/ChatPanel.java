@@ -34,15 +34,15 @@ public class ChatPanel extends JPanel {
 
         add(scrollPane, BorderLayout.CENTER);
 
-        // Adicionar mensagens iniciais
-        for (int i = 0; i < 5; i++) {
-            addBallonText("opa", false);
-            addBallonText("Mensagem curta", false);
-            addBallonText("Este é um balão de conversa com um texto mais longo para testar o ajuste de tamanho. Vamos ver como o layout se comporta com várias linhas de texto.", true);
-            addBallonText("Outro balão de texto.", false);
-            addBallonText("Mais um balão de texto para testar.", true);
-            addBallonText("Texto final do balão de conversa.", false);
-        }
+//        // Adicionar mensagens iniciais
+//        for (int i = 0; i < 5; i++) {
+//            addBallonText("opa", false);
+//            addBallonText("Mensagem curta", false);
+//            addBallonText("Este é um balão de conversa com um texto mais longo para testar o ajuste de tamanho. Vamos ver como o layout se comporta com várias linhas de texto.", true);
+//            addBallonText("Outro balão de texto.", false);
+//            addBallonText("Mais um balão de texto para testar.", true);
+//            addBallonText("Texto final do balão de conversa.", false);
+//        }
     }
 
     public void addBallonText(String text, boolean alignRight) {
