@@ -8,97 +8,94 @@ import java.awt.geom.RoundRectangle2D;
 public class BallonText extends JPanel {
     private final String text;
     private final Font font;
+    private final boolean alignRight;
+    private static final int MAX_WIDTH = 300; // Definindo uma largura máxima padrão
 
-    public BallonText(String text) {
+    public BallonText(String text, boolean alignRight) {
         this.text = text;
-        this.font = new Font("Arial", Font.PLAIN, 14); // Definindo a fonte Arial, tamanho 14
-        setOpaque(false); // Torna o painel transparente
-        setBorder(new EmptyBorder(10, 10, 10, 15)); // Define uma borda vazia ao redor do painel
+        this.font = new Font("Arial", Font.PLAIN, 14);
+        this.alignRight = alignRight;
+        setOpaque(false);
+        setBorder(new EmptyBorder(5, 5, 5, 5));
     }
 
     @Override
     public Dimension getPreferredSize() {
-        int maxWidth = (int) (getParent().getWidth() * 0.75); // 75% da largura do contêiner pai
-        FontMetrics metrics = getFontMetrics(font); // Obtém as métricas da fonte
-        int width = Math.min(maxWidth, calculateTextWidth(metrics, text, maxWidth)); // Calcula a largura do texto com base no limite máximo
-        int height = calculateTextHeight(metrics, text, width); // Calcula a altura do texto com base na largura calculada
-        return new Dimension(width + 30, height + 40); // Adiciona uma margem extra para bordas
+        FontMetrics metrics = getFontMetrics(font);
+        int width = Math.min(MAX_WIDTH, calculateTextWidth(metrics, text, MAX_WIDTH));
+        int height = calculateTextHeight(metrics, text, width);
+        return new Dimension(width + 30, height + 40);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create(); // Cria um objeto Graphics2D
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // Ativa o antialiasing
-        g2.setFont(font); // Define a fonte
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setFont(font);
 
-        FontMetrics metrics = g2.getFontMetrics(); // Obtém as métricas da fonte
-        int maxWidth = (int) (getParent().getWidth() * 0.75); // 75% da largura do contêiner pai
-        int width = Math.min(maxWidth, calculateTextWidth(metrics, text, maxWidth)); // Calcula a largura do texto com base no limite máximo
-        int height = calculateTextHeight(metrics, text, width); // Calcula a altura do texto com base na largura calculada
+        FontMetrics metrics = g2.getFontMetrics();
+        int width = Math.min(MAX_WIDTH, calculateTextWidth(metrics, text, MAX_WIDTH));
+        int height = calculateTextHeight(metrics, text, width);
 
-        // Desenha o retângulo arredondado
-        g2.setPaint(Color.WHITE); // Define a cor de preenchimento como branco
-        g2.fill(new RoundRectangle2D.Float(0, 0, width + 20, height + 30, 20, 20)); // Cria e preenche um retângulo arredondado
+        int x = alignRight ? getWidth() - (width + 20) : 0;
 
-        // Desenha o texto
-        g2.setPaint(Color.BLACK); // Define a cor do texto como preto
-        drawText(g2, text, 10, 25, width); // Desenha o texto
-        g2.dispose(); // Descarta o objeto Graphics2D
+        g2.setPaint(Color.WHITE);
+        g2.fill(new RoundRectangle2D.Float(x, 0, width + 20, height + 30, 20, 20));
+
+        g2.setPaint(Color.BLACK);
+        drawText(g2, text, x + 10, 25, width);
+        g2.dispose();
     }
 
     private void drawText(Graphics2D g2, String text, int x, int y, int maxWidth) {
-        FontMetrics metrics = g2.getFontMetrics(); // Obtém as métricas da fonte
-        int lineHeight = metrics.getHeight(); // Obtém a altura da linha
-        int curX = x; // Posição X atual para desenhar
-        int curY = y; // Posição Y atual para desenhar
-        int wordLeght = text.split(" ").length;
+        FontMetrics metrics = g2.getFontMetrics();
+        int lineHeight = metrics.getHeight();
+        int curX = x;
+        int curY = y;
 
-        for (String word : text.split(" ")) { // Divide o texto em palavras
-            int wordWidth = metrics.stringWidth(word + " "); // Calcula a largura da palavra
-            if (curX + wordWidth > maxWidth) { // Se a largura atual mais a largura da palavra exceder o máximo permitido
-                curX = x; // Reseta a posição X
-                curY += lineHeight; // Move para a próxima linha
+        for (String word : text.split(" ")) {
+            int wordWidth = metrics.stringWidth(word + " ");
+            if (curX + wordWidth > maxWidth + x) {
+                curX = x;
+                curY += lineHeight;
             }
-            if( wordLeght <= 1){
-                curY = y;
-            }
-            g2.drawString(word, curX, curY); // Desenha a palavra na posição atual
-            curX += wordWidth; // Atualiza a posição X
+            g2.drawString(word, curX, curY);
+            curX += wordWidth;
         }
     }
 
     private int calculateTextWidth(FontMetrics metrics, String text, int maxWidth) {
-        int curX = 0; // Posição X atual
-        int maxLineWidth = 0; // Largura máxima da linha
+        int curX = 0;
+        int maxLineWidth = 0;
 
-        for (String word : text.split(" ")) { // Divide o texto em palavras
-            int wordWidth = metrics.stringWidth(word + " "); // Calcula a largura da palavra
-            if (curX + wordWidth > maxWidth) { // Se a largura atual mais a largura da palavra exceder o máximo permitido
-                maxLineWidth = Math.max(maxLineWidth, curX); // Atualiza a largura máxima da linha
-                curX = 0; // Reseta a posição X
+        for (String word : text.split(" ")) {
+            int wordWidth = metrics.stringWidth(word + " ");
+            if (curX + wordWidth > maxWidth) {
+                maxLineWidth = Math.max(maxLineWidth, curX);
+                curX = 0;
             }
-            curX += wordWidth; // Atualiza a posição X
+            curX += wordWidth;
         }
 
-        maxLineWidth = Math.max(maxLineWidth, curX); // Calcula a largura máxima da linha final
+        maxLineWidth = Math.max(maxLineWidth, curX);
         return maxLineWidth;
     }
 
     private int calculateTextHeight(FontMetrics metrics, String text, int maxWidth) {
-        int lineHeight = metrics.getHeight(); // Obtém a altura da linha
-        int curX = 0; // Posição X atual
-        int numLines = 1; // Número de linhas necessárias
+        int lineHeight = metrics.getHeight();
+        int curX = 0;
+        int numLines = 1;
 
-        for (String word : text.split(" ")) { // Divide o texto em palavras
-            int wordWidth = metrics.stringWidth(word + " "); // Calcula a largura da palavra
-            if (curX + wordWidth > maxWidth) { // Se a largura atual mais a largura da palavra exceder o máximo permitido
-                numLines++; // Incrementa o número de linhas
-                curX = 0; // Reseta a posição X
+        for (String word : text.split(" ")) {
+            int wordWidth = metrics.stringWidth(word + " ");
+            if (curX + wordWidth > maxWidth) {
+                numLines++;
+                curX = 0;
             }
-            curX += wordWidth; // Atualiza a posição X
+            curX += wordWidth;
         }
 
-        return lineHeight * numLines; // Calcula a altura total do texto
+        return lineHeight * numLines;
     }
 }

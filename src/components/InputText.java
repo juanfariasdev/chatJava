@@ -44,7 +44,7 @@ public class InputText extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = textField.getText();
-                chatController.sendMessage(text);
+                chatController.sendMessage(text, true);
                 textField.setText("");
             }
         });

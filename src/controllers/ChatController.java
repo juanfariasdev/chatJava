@@ -9,9 +9,9 @@ public class ChatController {
         this.chatPanel = chatPanel;
     }
 
-    public void sendMessage(String text) {
+    public void sendMessage(String text, boolean alignRight) {
         if (text != null && !text.trim().isEmpty()) {
-            chatPanel.addBallonText(text);
+            chatPanel.addBallonText(text, alignRight);
         }
     }
 }
