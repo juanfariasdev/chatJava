@@ -13,7 +13,7 @@ public class BallonText extends JPanel {
         this.text = text;
         this.font = new Font("Arial", Font.PLAIN, 14); // Definindo a fonte Arial, tamanho 14
         setOpaque(false); // Torna o painel transparente
-        setBorder(new EmptyBorder(10, 15, 10, 15)); // Define uma borda vazia ao redor do painel
+        setBorder(new EmptyBorder(10, 10, 10, 15)); // Define uma borda vazia ao redor do painel
     }
 
     @Override
@@ -22,7 +22,7 @@ public class BallonText extends JPanel {
         FontMetrics metrics = getFontMetrics(font); // Obtém as métricas da fonte
         int width = Math.min(maxWidth, calculateTextWidth(metrics, text, maxWidth)); // Calcula a largura do texto com base no limite máximo
         int height = calculateTextHeight(metrics, text, width); // Calcula a altura do texto com base na largura calculada
-        return new Dimension(width + 30, height + 30); // Adiciona uma margem extra para bordas
+        return new Dimension(width + 30, height + 40); // Adiciona uma margem extra para bordas
     }
 
     @Override
@@ -39,11 +39,11 @@ public class BallonText extends JPanel {
 
         // Desenha o retângulo arredondado
         g2.setPaint(Color.WHITE); // Define a cor de preenchimento como branco
-        g2.fill(new RoundRectangle2D.Float(0, 0, width + 30, height + 30, 20, 20)); // Cria e preenche um retângulo arredondado
+        g2.fill(new RoundRectangle2D.Float(0, 0, width + 20, height + 30, 20, 20)); // Cria e preenche um retângulo arredondado
 
         // Desenha o texto
         g2.setPaint(Color.BLACK); // Define a cor do texto como preto
-        drawText(g2, text, 15, 25, width); // Desenha o texto
+        drawText(g2, text, 10, 25, width); // Desenha o texto
         g2.dispose(); // Descarta o objeto Graphics2D
     }
 
@@ -52,12 +52,16 @@ public class BallonText extends JPanel {
         int lineHeight = metrics.getHeight(); // Obtém a altura da linha
         int curX = x; // Posição X atual para desenhar
         int curY = y; // Posição Y atual para desenhar
+        int wordLeght = text.split(" ").length;
 
         for (String word : text.split(" ")) { // Divide o texto em palavras
             int wordWidth = metrics.stringWidth(word + " "); // Calcula a largura da palavra
             if (curX + wordWidth > maxWidth) { // Se a largura atual mais a largura da palavra exceder o máximo permitido
                 curX = x; // Reseta a posição X
                 curY += lineHeight; // Move para a próxima linha
+            }
+            if( wordLeght <= 1){
+                curY = y;
             }
             g2.drawString(word, curX, curY); // Desenha a palavra na posição atual
             curX += wordWidth; // Atualiza a posição X
