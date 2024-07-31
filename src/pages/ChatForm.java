@@ -8,57 +8,26 @@ import ui.Background;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Scanner;
-
 
 public class ChatForm extends JFrame {
     private Sender sender;
+    private ChatPanel chatPanel;
 
-    public ChatForm() {
+    public ChatForm(Sender sender, ChatPanel chatPanel) {
+        this.sender = sender;
+        this.chatPanel = chatPanel;
+        initializeUI();
+    }
+
+    private void initializeUI() {
         Background background = new Background();
-        ChatPanel chatPanel = new ChatPanel();
         GUIMessageContainer messageContainer = new GUIMessageContainer(chatPanel);
         ChatController chatController = new ChatController(chatPanel);
-        Scanner reader = new Scanner(System.in);
-        System.out.print("Porta local: ");
-        int localPort = reader.nextInt();
-        System.out.print("Porta remota: ");
-        int serverPort = reader.nextInt();
 
-        System.out.print("Nome: ");
-        String username = reader.nextLine();
-
-
-        try {
-            sender = ChatFactory.build("localhost", localPort, serverPort, messageContainer); // Ajuste as portas conforme necessário
-        } catch (ChatException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erro ao iniciar o chat: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
-        }
         InputText inputText = new InputText(chatController, sender);
+
         // Cria o painel superior com o botão de sair
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setOpaque(false);
-        topPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-        JButton closeButton = new JButton("X");
-        closeButton.setContentAreaFilled(false);
-        closeButton.setBorderPainted(false);
-        closeButton.setFocusPainted(false);
-        closeButton.setFont(new Font("Arial", Font.BOLD, 14));
-        closeButton.setForeground(Color.RED);
-
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-
-        topPanel.add(closeButton, BorderLayout.EAST);
+        JPanel topPanel = createTopPanel();
 
         background.setLayout(new BorderLayout());
         background.add(topPanel, BorderLayout.NORTH);  // Adiciona o painel superior
@@ -74,5 +43,23 @@ public class ChatForm extends JFrame {
         setSize(560, 669);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private JPanel createTopPanel() {
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
+        topPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        JButton closeButton = new JButton("X");
+        closeButton.setContentAreaFilled(false);
+        closeButton.setBorderPainted(false);
+        closeButton.setFocusPainted(false);
+        closeButton.setFont(new Font("Arial", Font.BOLD, 14));
+        closeButton.setForeground(Color.RED);
+
+        closeButton.addActionListener(e -> System.exit(0));
+
+        topPanel.add(closeButton, BorderLayout.EAST);
+        return topPanel;
     }
 }
