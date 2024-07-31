@@ -12,9 +12,10 @@ public class Main {
             try {
                 String localPortStr = JOptionPane.showInputDialog(null, "Porta local:");
                 String remotePortStr = JOptionPane.showInputDialog(null, "Porta remota:");
+                String username = JOptionPane.showInputDialog(null, "Nome de usuário:");
 
-                if (localPortStr == null || remotePortStr == null) {
-                    showError("Porta inválida.");
+                if (localPortStr == null || remotePortStr == null || username == null || username.trim().isEmpty()) {
+                    showError("Entrada inválida.");
                     return;
                 }
 
@@ -23,13 +24,12 @@ public class Main {
 
                 InetAddress serverAddress = InetAddress.getByName("localhost");
 
-                // Criação do ChatPanel aqui
                 ChatPanel chatPanel = new ChatPanel();
                 GUIMessageContainer messageContainer = new GUIMessageContainer(chatPanel);
 
                 Sender sender = ChatFactory.build(serverAddress.getHostName(), remotePort, localPort, messageContainer);
 
-                new ChatForm(sender, chatPanel);
+                new ChatForm(sender, chatPanel, username);
 
             } catch (NumberFormatException e) {
                 showError("Porta inválida.");

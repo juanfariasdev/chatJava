@@ -12,11 +12,15 @@ import java.awt.*;
 public class ChatForm extends JFrame {
     private Sender sender;
     private ChatPanel chatPanel;
+    private String username;
+    private JLabel userLabel;
 
-    public ChatForm(Sender sender, ChatPanel chatPanel) {
+    public ChatForm(Sender sender, ChatPanel chatPanel, String username) {
         this.sender = sender;
         this.chatPanel = chatPanel;
+        this.username = username;
         initializeUI();
+        waitForSecondConnection();
     }
 
     private void initializeUI() {
@@ -26,7 +30,7 @@ public class ChatForm extends JFrame {
 
         InputText inputText = new InputText(chatController, sender);
 
-        // Cria o painel superior com o botão de sair
+        // Cria o painel superior com o botão de sair e o nome do usuário
         JPanel topPanel = createTopPanel();
 
         background.setLayout(new BorderLayout());
@@ -59,7 +63,25 @@ public class ChatForm extends JFrame {
 
         closeButton.addActionListener(e -> System.exit(0));
 
+        userLabel = new JLabel("Aguardando conexão...");
+        userLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        userLabel.setForeground(Color.BLACK);
+
+        topPanel.add(userLabel, BorderLayout.CENTER);
         topPanel.add(closeButton, BorderLayout.EAST);
         return topPanel;
+    }
+
+    private void waitForSecondConnection() {
+        // Simulando a espera por uma segunda conexão.
+        // Em um cenário real, isso envolveria lógica de rede para detectar a conexão do segundo usuário.
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000); // Simula o tempo de espera para a segunda conexão
+                SwingUtilities.invokeLater(() -> userLabel.setText("Conectado com o: " + username));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }
