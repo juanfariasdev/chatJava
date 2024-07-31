@@ -65,7 +65,7 @@ public class ChatForm extends JFrame {
 
         userLabel = new JLabel("Aguardando conexão...");
         userLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        userLabel.setForeground(Color.BLACK);
+        userLabel.setForeground(Color.WHITE);
 
         topPanel.add(userLabel, BorderLayout.CENTER);
         topPanel.add(closeButton, BorderLayout.EAST);
